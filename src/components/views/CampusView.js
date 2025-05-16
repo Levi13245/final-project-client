@@ -86,7 +86,10 @@ const CampusView = ({ campus, deleteCampus, deleteStudent }) => {
             variant="contained" 
             color="primary" 
             component={Link}
-            to={`/students/new?campusId=${campus.id}`}
+            to={{
+              pathname: "/students/new",
+              state: { campusId: campus.id }
+            }}
           >
             Enroll New Student
           </Button>
@@ -97,7 +100,10 @@ const CampusView = ({ campus, deleteCampus, deleteStudent }) => {
             variant="contained" 
             color="primary" 
             component={Link}
-            to={`/students/new?campusId=${campus.id}`}
+            to={{
+              pathname: "/students/new",
+              state: { campusId: campus.id }
+            }}
             style={{ marginBottom: 20 }}
           >
             Enroll New Student

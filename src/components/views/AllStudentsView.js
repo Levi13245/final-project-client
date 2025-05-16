@@ -1,62 +1,78 @@
 import { Link } from "react-router-dom";
-import Button from '@material-ui/core/Button';
+import { Button, Typography, Card, CardContent, Grid } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    padding: theme.spacing(3),
+  },
+  card: {
+    marginBottom: theme.spacing(2),
+  },
+}));
 
 const AllStudentsView = ({ students, deleteStudent }) => {
-  return (
-    <div>
-      <h1>All Students</h1>
-      
-      <Link to="/students/new">
-        <Button variant="contained" color="primary" style={{ marginBottom: '20px' }}>
+  const classes = useStyles();
+
+  if (!students.length) {
+    return (
+      <div className={classes.root}>
+        <Typography variant="h4" gutterBottom>All Students</Typography>
+        <Typography>There are no students.</Typography>
+        <Button 
+          variant="contained" 
+          color="primary" 
+          component={Link} 
+          to="/newstudent"
+          style={{ marginTop: 20 }}
+        >
           Add New Student
         </Button>
-      </Link>
+      </div>
+    );
+  }
 
-      {!students.length ? (
-        <p>There are no students.</p>
-      ) : (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '20px' }}>
-          {students.map((student) => (
-            <div key={student.id} style={{
-              border: '1px solid #ddd',
-              borderRadius: '8px',
-              padding: '15px'
-            }}>
-              <Link to={`/student/${student.id}`}>
-                <img 
-                  src={student.imageUrl || '/default-student.jpg'} 
-                  alt={`${student.firstname} ${student.lastname}`}
-                  style={{ width: '100%', height: '200px', objectFit: 'cover' }}
-                />
-                <h2>{student.firstname} {student.lastname}</h2>
-              </Link>
-              {student.campus && (
-                <p>
-                  <strong>Campus:</strong> 
-                  <Link to={`/campus/${student.campus.id}`}>
-                    {student.campus.name}
-                  </Link>
-                </p>
-              )}
-              
-              <div style={{ marginTop: '10px' }}>
-                <Button 
-                  variant="contained" 
-                  color="secondary"
-                  onClick={() => deleteStudent(student.id)}
-                >
-                  Delete
-                </Button>
-                <Link to={`/student/${student.id}/edit`} style={{ marginLeft: '10px' }}>
-                  <Button variant="contained" color="primary">
-                    Edit
+  return (
+    <div className={classes.root}>
+      <Typography variant="h4" gutterBottom>All Students</Typography>
+      
+      <Button 
+        variant="contained" 
+        color="primary" 
+        component={Link} 
+        to="/newstudent"
+        style={{ marginBottom: 20 }}
+      >
+        Add New Student
+      </Button>
+
+      <Grid container spacing={3}>
+        {students.map((student) => (
+          <Grid item xs={12} sm={6} md={4} key={student.id}>
+            <Card className={classes.card}>
+              <CardContent>
+                <Typography variant="h5" component={Link} to={`/student/${student.id}`}>
+                  {student.firstname} {student.lastname}
+                </Typography>
+                <Typography>Email: {student.email}</Typography>
+                <Typography>GPA: {student.gpa || 'N/A'}</Typography>
+                <Typography>
+                  Campus: {student.campus ? student.campus.name : 'Not enrolled'}
+                </Typography>
+                <div style={{ marginTop: 10 }}>
+                  <Button 
+                    size="small" 
+                    color="secondary"
+                    onClick={() => deleteStudent(student.id)}
+                  >
+                    Delete
                   </Button>
-                </Link>
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
+                </div>
+              </CardContent>
+            </Card>
+          </Grid>
+        ))}
+      </Grid>
     </div>
   );
 };
