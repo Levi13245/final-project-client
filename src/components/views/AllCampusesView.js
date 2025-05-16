@@ -1,46 +1,96 @@
-/*==================================================
-AllCampusesView.js
+/* ===== /src/components/views/AllCampusesView.js ===== */
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
+import { Button, Card, CardContent, Typography, Grid } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 
-The Views component is responsible for rendering web page with data provided by the corresponding Container component.
-It constructs a React component to display all campuses.
-================================================== */
-import PropTypes from "prop-types";
-import { Link } from "react-router-dom";
+const useStyles = makeStyles((theme) => ({
+  root: {
+    flexGrow: 1,
+    padding: theme.spacing(3),
+  },
+  card: {
+    height: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  cardMedia: {
+    paddingTop: '56.25%', // 16:9
+  },
+  cardContent: {
+    flexGrow: 1,
+  },
+}));
 
-const AllCampusesView = (props) => {
-  // If there is no campus, display a message.
-  if (!props.allCampuses.length) {
-    return <div>There are no campuses.</div>;
-  }
+const AllCampusesView = ({ allCampuses, deleteCampus }) => {
+  const classes = useStyles();
 
-  // If there is at least one campus, render All Campuses view 
   return (
-    <div>
-      <h1>All Campuses</h1>
+    <div className={classes.root}>
+      <Typography variant="h2" gutterBottom>
+        All Campuses
+      </Typography>
+      
+      <Button 
+        variant="contained" 
+        color="primary" 
+        component={Link} 
+        to="/campuses/add"
+        style={{ marginBottom: 20 }}
+      >
+        Add New Campus
+      </Button>
 
-      {props.allCampuses.map((campus) => (
-        <div key={campus.id}>
-          <Link to={`/campus/${campus.id}`}>
-            <h2>{campus.name}</h2>
-          </Link>
-          <h4>campus id: {campus.id}</h4>
-          <p>{campus.address}</p>
-          <p>{campus.description}</p>
-          <hr/>
-        </div>
-      ))}
-      <br/>
-      <Link to={`/`}>
-        <button>Add New Campus</button>
-      </Link>
-      <br/><br/>
+      {!allCampuses.length ? (
+        <Typography variant="body1">There are no campuses.</Typography>
+      ) : (
+        <Grid container spacing={4}>
+          {allCampuses.map((campus) => (
+            <Grid item key={campus.id} xs={12} sm={6} md={4}>
+              <Card className={classes.card}>
+                <img
+                  src={campus.imageUrl || '/default-campus.jpg'}
+                  alt={campus.name}
+                  style={{ width: '100%', height: 200, objectFit: 'cover' }}
+                />
+                <CardContent className={classes.cardContent}>
+                  <Typography gutterBottom variant="h5" component={Link} to={`/campus/${campus.id}`}>
+                    {campus.name}
+                  </Typography>
+                  <Typography>{campus.address}</Typography>
+                  <Typography color="textSecondary">{campus.description}</Typography>
+                </CardContent>
+                <div style={{ padding: 16 }}>
+                  <Button 
+                    size="small" 
+                    color="secondary"
+                    onClick={() => deleteCampus(campus.id)}
+                  >
+                    Delete
+                  </Button>
+                  <Button 
+                    size="small" 
+                    color="primary" 
+                    component={Link}
+                    to={`/campus/${campus.id}/edit`}
+                    style={{ marginLeft: 8 }}
+                  >
+                    Edit
+                  </Button>
+                </div>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
+      )}
     </div>
   );
 };
 
-// Validate data type of the props passed to component.
 AllCampusesView.propTypes = {
   allCampuses: PropTypes.array.isRequired,
+  deleteCampus: PropTypes.func.isRequired,
 };
 
 export default AllCampusesView;

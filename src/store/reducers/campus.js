@@ -1,24 +1,29 @@
-/*==================================================
-/src/store/reducers/campus.js
+/* ===== /src/store/reducers/campus.js ===== */
+import { 
+  FETCH_CAMPUS, 
+  ADD_STUDENT_TO_CAMPUS, 
+  REMOVE_STUDENT_FROM_CAMPUS 
+} from "../actions/actionTypes";
 
-This is a Reducer function that accepts 2 parameters: the previous state object (aka current state) and an action object. 
-Depending on the Action object, the Reducer updates the State and return the new State object.
-It also defines the State and its default initial value.
-================================================== */
-import { FETCH_CAMPUS } from "../actions/actionTypes";  // Import Action Type
-
-// Define default Initial State
 const initialState = {
-  students: [],  // Empty students array
+  students: []
 };
 
-// REDUCER:
-const campus = (state = initialState, action) => {  // Use "initialState" as default Initial State
+const campus = (state = initialState, action) => {
   switch (action.type) {
     case FETCH_CAMPUS:
       return action.payload;
+    case ADD_STUDENT_TO_CAMPUS:
+      return {
+        ...state,
+        students: [...state.students, action.payload]
+      };
+    case REMOVE_STUDENT_FROM_CAMPUS:
+      return {
+        ...state,
+        students: state.students.filter(student => student.id !== action.payload)
+      };
     default:
-      // If the Reducer doesn't recognize the Action Type, returns the previous (current) State unchanged.
       return state;
   }
 };

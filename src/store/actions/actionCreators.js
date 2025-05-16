@@ -1,60 +1,64 @@
+/* ===== /src/store/actions/actionCreators.js ===== */
 import * as at from './actionTypes';
 
-// ACTION CREATORS;
-/** needs to be an action creator
- * for each action type
- */
+// Campuses
+export const fetchAllCampuses = (campuses) => ({
+  type: at.FETCH_ALL_CAMPUSES,
+  payload: campuses
+});
 
-// All Campuses
-export const fetchAllCampuses = (campuses) => {
-  return {
-    type: at.FETCH_ALL_CAMPUSES,
-    payload: campuses,
-  };
-};
+export const fetchCampus = (campus) => ({
+  type: at.FETCH_CAMPUS,
+  payload: campus
+});
 
-//Single Campus
-export const fetchCampus = (campus) => {
-  return {
-    type: at.FETCH_CAMPUS,
-    payload: campus,
-  };
-};
+export const addCampus = (campus) => ({
+  type: at.ADD_CAMPUS,
+  payload: campus
+});
 
-//All Students
-export const fetchAllStudents = (students) => {
-  return {
-    type: at.FETCH_ALL_STUDENTS,
-    payload: students,
-  };
-};
+export const deleteCampus = (campusId) => ({
+  type: at.DELETE_CAMPUS,
+  payload: campusId
+});
 
-export const addStudent = (student) => {
-  return {
-    type: at.ADD_STUDENT,
-    payload: student,
-  };
-};
+export const editCampus = (campus) => ({
+  type: at.EDIT_CAMPUS,
+  payload: campus
+});
 
-export const deleteStudent = (studentId) => {
-  return {
-    type: at.DELETE_STUDENT,
-    payload: studentId,
-  };
-};
+export const addStudentToCampus = (student) => ({
+  type: at.ADD_STUDENT_TO_CAMPUS,
+  payload: student
+});
 
+export const removeStudentFromCampus = (studentId) => ({
+  type: at.REMOVE_STUDENT_FROM_CAMPUS,
+  payload: studentId
+});
 
-export const editStudent = (student) => {
-  return {
-    type: at.EDIT_STUDENT,
-    payload: student,
-  };
-};
+// Students
+export const fetchAllStudents = (students) => ({
+  type: at.FETCH_ALL_STUDENTS,
+  payload: students
+});
 
-//Single Student
-export const fetchStudent = (student) => {
-  return {
-    type: at.FETCH_STUDENT,
-    payload: student,
-  };
-};
+export const fetchStudent = (student) => ({
+  type: at.FETCH_STUDENT,
+  payload: student
+});
+
+export const addStudent = (student) => ({
+  type: at.ADD_STUDENT,
+  payload: student
+});
+
+export const deleteStudent = (studentId) => ({
+  type: at.DELETE_STUDENT,
+  payload: studentId
+});
+
+export const editStudent = (student) => ({
+  type: at.EDIT_STUDENT,
+  payload: student
+});
